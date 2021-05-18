@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
-import { USER_TYPES } from '../utils/constants.js'
+import { STATUS_TYPES, USER_TYPES } from '../utils/constants.js'
 
 const userSchema = mongoose.Schema(
 	{
@@ -30,6 +30,15 @@ const userSchema = mongoose.Schema(
 			type: Number,
 			required: true,
 			default: USER_TYPES.REGULAR,
+		},
+		isActive: {
+			type: Boolean,
+			required: true,
+			default: false,
+		},
+		status: {
+			type: Number,
+			default: STATUS_TYPES.ACTIVE,
 		},
 	},
 	{ timestamps: true }

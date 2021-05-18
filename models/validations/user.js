@@ -3,16 +3,16 @@ import User from '../User.js'
 import validate from './validate.js'
 
 const checkUniqueUserEmail = async (email) => {
-	const user = await User.find({ email })
-	if (!user) {
+	const user = await User.findOne({ email })
+	if (user) {
 		throw new Error('Email already exists')
 	}
 	return true
 }
 
 const checkUniqueUserUserId = async (userId) => {
-	const user = await User.find({ userId })
-	if (!user) {
+	const user = await User.findOne({ userId })
+	if (user) {
 		throw new Error('UserId already exists')
 	}
 	return true
@@ -57,5 +57,20 @@ export const userValidator = [
 		.withMessage('UserId cannot be empty')
 		.bail()
 		.custom((userId) => checkUniqueUserUserId(userId)),
+	validate,
+]
+
+export const loginValidator = [
+	check('credential')
+		.notEmpty()
+		.withMessage('User Id/Email cannot be empty')
+		.bail(),
+	check('password')
+		.notEmpty()
+		.withMessage('Password cannot be empty')
+		.bail()
+		.isLength({ min: 6, max: 15 })
+		.withMessage('Invalid Password')
+		.bail(),
 	validate,
 ]
